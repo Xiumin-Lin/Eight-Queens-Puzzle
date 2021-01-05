@@ -58,21 +58,19 @@ class Queen:
 
     # Une fonction qui vérifie si l'emplacement de la reine n'est pas attaqué
     # Similaire à la function can_attack(self)
-    # Attention, cette fonction ne vérifie que les cases à gauche, en diagonal haut gauche et en diagonal bas gauche de la reine
+    # Attention, cette fonction ne vérifie que les cases en diagonal haut gauche et en diagonal bas gauche de la reine
     # Utilisez cette fonction avec une boucle qui parcourt le board de haut en bas et puis de gauche à droite
     def can_be_placed(self):
-        if (self.can_attack_left()
-                or self.can_attack_diag_up_left() 
-                or self.can_attack_diag_down_left()):
+        if (self.can_attack_diag_up_left() or self.can_attack_diag_down_left()):
             return False
         return True
 
-    # Une fonction qui vérifie si la reine peut attaquer (une autre reine) à sa gauche
-    def can_attack_left(self):
-        for i in range(self.x):
-            if (self.board[self.y][i] == Queen.value):
-                return True
-        return False
+    # # Une fonction qui vérifie si la reine peut attaquer (une autre reine) à sa gauche
+    # def can_attack_left(self):
+    #     for i in range(self.x):
+    #         if (self.board[self.y][i] == Queen.value):
+    #             return True
+    #     return False
 
     # Une fonction qui vérifie si la reine peut attaquer à sa diagonale haut gauche
     def can_attack_diag_up_left(self):
