@@ -74,7 +74,7 @@ def solve_n_queen_big(board_size, empty_board):
 
 def set_queens_on_board(board_size):
     listQ = [0] * board_size
-    y = 2  # random.randint(0, board_size - 1)
+    y = random.randint(0, board_size - 1)
     inc = 3 - (board_size % 2)
     for x in range(board_size):
         listQ[x] = y
