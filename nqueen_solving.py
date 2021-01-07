@@ -1,9 +1,10 @@
 from utils_functions import *
 import random
 
-# Premier algorithme : la naiveté
+
+# First algorithm: naivety
 def solve_n_queen_small(board_size, empty_board):
-    banList= {}
+    banList = {}
     banList["row"] = [False for i in range(board_size)]
     banList["slash"] = [False for i in range(board_size * 2 - 1)]
     banList["backslash"] = [False for i in range(board_size * 2 - 1)]
@@ -12,14 +13,15 @@ def solve_n_queen_small(board_size, empty_board):
         return board, True
     return board, False
 
-# Test s'il est possible de placé une reine sur la colonne numéro x
-# _ Appele récursivement la fonction backtrack() si une reine peut etre placé dans le tableau
-#   mais que tous les reines n'ont pas été placées
-# _ Les cases d'une même diagonale que ce soit / ou \ ont la même valeur
-# _ Lorsqu'une reine peut être posé, la ligne (y) et ses diagonales (/ et \) sur laquelle elle est placée 
-#   seront bannies et ne seront plus traitées durant la bourcle for tant que la reine placée sera présent
-# _ Return le board et True si le tout les reinse ont été placées
-# _ Return le board et False si le tout les reinse ont été placées et/ou aucune reine a pu etre placé sur la colonne
+
+# Test if it is possible to place a queen on the column number x
+# _ Recursively calls the backtrack() function if a queen can be placed in the array.
+# but not all the queens have been placed
+# The squares of the same diagonal either / or \ have the same value.
+# _ When a queen can be placed, the line (y) and its diagonals (/ and \) on which it is placed
+# will be banned and will not be processed further during the for as long as the placed queen is present.
+# _ Return the board and True if all the kidneys have been placed.
+# Return the board and False if all the kidneys have been placed and/or no queen has been placed on the column.
 def backtrack(x, board_size, previous_board, banList):
     if(x == board_size):
         return previous_board, True
@@ -32,7 +34,7 @@ def backtrack(x, board_size, previous_board, banList):
         slash_value = x + y
         can_be_placed = not banList["row"][y] and not banList["slash"][slash_value] and not banList["backslash"][bslash_value]
         if can_be_placed:
-            board = [row[:] for row in previous_board] # on crée une copie du board d'avant
+            board = [row[:] for row in previous_board]  # we create a copy of the previous board
 
             board[y][x] = Queen.value
             banList["row"][y] = True
@@ -42,20 +44,20 @@ def backtrack(x, board_size, previous_board, banList):
             new_board, solved = backtrack(x + 1, board_size, board, banList)
             if(solved):
                 return new_board, solved
-            
             board[y][x] = "0"
             banList["row"][y] = False
             banList["slash"][slash_value] = False
             banList["backslash"][bslash_value] = False
     return board, False
 
+
 ################################################
-# Deuxième algorithme : le meilleur
+# Second algorithm: the best
 def solve_n_queen_big(board_size, empty_board):
     for num_config in range(board_size):
         # print("config -> " + str(num_config))
         board = [row[:] for row in empty_board]
-        listQ = set_queens_on_board(board_size, board)
+        listQ = set_queens_on_board(board_size)
         # print_board(board_size, board)
         # print(listQ)
         max_step = 1000
@@ -67,15 +69,16 @@ def solve_n_queen_big(board_size, empty_board):
             return board, solved
     return board, solved
 
-def set_queens_on_board(board_size, board):
+
+def set_queens_on_board(board_size):
     listQ = [0] * board_size
-    y = 2 # random.randint(0, board_size - 1)
+    y = 2  # random.randint(0, board_size - 1)
     inc = 3 - (board_size % 2)
     for x in range(board_size):
-        # board[y][x] = 1 #Queen.value, en vrai pas necessaire de travailler avec le board, listQ suffit
         listQ[x] = y
         y = (y + inc) % board_size
     return listQ
+
 
 def min_conflicts(listQ, board_size, max_step):
     for step in range(max_step):
@@ -87,9 +90,9 @@ def min_conflicts(listQ, board_size, max_step):
             return True
         # print("m_c_l = ")
         # print(most_c_listQ)
-        chosen_col = random.choice(most_c_listQ)     # on choisi au hasard la colonne d'une reine qui a le plus de conflits (si yen a plusieur)
-        qy = listQ[chosen_col]                  # qy = la ligne de la reine choisie
-        min_c_rows = [qy]                       # on considère par défaut que la case ayant le moins de conflit est celle de la reine choisie
+        chosen_col = random.choice(most_c_listQ)     # we choose at random the column of a queen that has the most conflicts (if there is more than one)
+        qy = listQ[chosen_col]                  # qy = the row of the chosen queen
+        min_c_rows = [qy]                       # we consider by default that the box with the least conflict is the one of the chosen queen
         # print("chosen_col = " + str(chosen_col))
         # print("min_c_rows before = " + str(min_c_rows))
         for row in range(board_size):
@@ -103,7 +106,7 @@ def min_conflicts(listQ, board_size, max_step):
                     min_c_rows = [row]
                     most_nb_c = case_nb_conflits
         # print("min_c_rows after = " + str(min_c_rows))
-        listQ[chosen_col] =  random.choice(min_c_rows)
+        listQ[chosen_col] = random.choice(min_c_rows)
         # print(listQ)
         # print("--------------------------------------- End step = " + str(step))
     return False
@@ -112,7 +115,8 @@ def min_conflicts(listQ, board_size, max_step):
 def most_conflicts_listQ(listQ, board_size):
     most_conflicts = 0
     most_conflicts_listQ = []
-    for x in range(board_size): # on détermine la liste des reines qui ont le + de conflits
+    # we determine the list of queens that have the most conflicts
+    for x in range(board_size):
         q_conflicts = get_nb_conflits(listQ, x, board_size)
         if(most_conflicts == q_conflicts and q_conflicts > 0):
             most_conflicts_listQ.append(x)
@@ -120,6 +124,7 @@ def most_conflicts_listQ(listQ, board_size):
             most_conflicts_listQ = [x]
             most_conflicts = q_conflicts
     return most_conflicts, most_conflicts_listQ
+
 
 def get_nb_conflits(listQ, refQ_x, board_size):
     nb_conflits = 0
@@ -130,7 +135,7 @@ def get_nb_conflits(listQ, refQ_x, board_size):
     right_top_sublist = []
     right_bot_sublist = []
 
-    for i in range(refQ_x): # queens sublist on the left side of the reference queen
+    for i in range(refQ_x):  # queens sublist on the left side of the reference queen
         if(listQ[i] == listQ[refQ_x]):
             if not left_conflit:
                 nb_conflits += 1
@@ -140,7 +145,7 @@ def get_nb_conflits(listQ, refQ_x, board_size):
         else:
             left_bot_sublist.append(i)
 
-    for j in range(refQ_x + 1, len(listQ)): # queens sublist on the right side of the reference queen
+    for j in range(refQ_x + 1, len(listQ)):  # queens sublist on the right side of the reference queen
         if(listQ[j] == listQ[refQ_x]):
             if not right_conflit:
                 nb_conflits += 1
@@ -155,7 +160,7 @@ def get_nb_conflits(listQ, refQ_x, board_size):
                     + subBoard_backslash(left_top_sublist, listQ, refQ_x, board_size)
                     + subBoard_backslash(right_bot_sublist, listQ, refQ_x, board_size))
     # à retirer
-    # print(left_top_sublist) 
+    # print(left_top_sublist)
     # print("left_top = " + str(subBoard_backslash(left_top_sublist, listQ, refQ_x, board_size)))
     # print(left_bot_sublist)
     # print("left_bot = " + str(subBoard_slash(left_bot_sublist, listQ, refQ_x)))
@@ -163,8 +168,8 @@ def get_nb_conflits(listQ, refQ_x, board_size):
     # print("right_top = " + str(subBoard_slash(right_top_sublist, listQ, refQ_x)))
     # print(right_bot_sublist)
     # print("right_bot = " + str(subBoard_backslash(right_bot_sublist, listQ, refQ_x, board_size)))
-
     return nb_conflits
+
 
 def subBoard_slash(sublistQ_idx, listQ, refQ_x):
     slash_value_ref = listQ[refQ_x] + refQ_x
@@ -174,6 +179,7 @@ def subBoard_slash(sublistQ_idx, listQ, refQ_x):
             return 1
     return 0
 
+
 def subBoard_backslash(sublistQ_idx, listQ, refQ_x, board_size):
     backslash_value_ref = listQ[refQ_x] - refQ_x + (board_size - 1)
     for col in sublistQ_idx:
@@ -182,11 +188,12 @@ def subBoard_backslash(sublistQ_idx, listQ, refQ_x, board_size):
             return 1
     return 0
 
+
 ################################################
-# Troisième algorithme : toutes les combinaisons
+# Third algorithm: all combinations
 def solve_n_queen_all_soluce(board_size, empty_board):
     boards = []
-    banList= {}
+    banList = {}
     banList["row"] = [False for i in range(board_size)]
     banList["slash"] = [False for i in range(board_size * 2 - 1)]
     banList["backslash"] = [False for i in range(board_size * 2 - 1)]
@@ -194,10 +201,11 @@ def solve_n_queen_all_soluce(board_size, empty_board):
     backtrack_all(0, board_size, empty_board, banList, boards)
     return boards
 
-# Fonctionne de la même manière que la fonction backtrack(), mais reçoit en plus une liste (boards) 
-# qui stocke tous les solutions possibles pour un N donné du N Queen Puzzle 
-# _ Ne retourne rien, la liste de toute les solutions correspond à la liste passé en paramètre
-# _ S'il n'existe aucune solution, la liste sera vide
+
+# Works the same way as the backtrack() function, but receives a list (boards) in addition.
+# which stores all possible solutions for a given N of the N Queen Puzzle
+# Do not return anything, the list of all the solutions corresponds to the list passed in parameter
+# If there is no solution, the list will be empty.
 def backtrack_all(x, board_size, previous_board, banList, boards):
     if(x == board_size):
         boards.append(previous_board)
@@ -212,8 +220,7 @@ def backtrack_all(x, board_size, previous_board, banList, boards):
         slash_value = x + y
         can_be_placed = not banList["row"][y] and not banList["slash"][slash_value] and not banList["backslash"][bslash_value]
         if can_be_placed:
-            board = [row[:] for row in previous_board] # on crée une copie du board d'avant
-
+            board = [row[:] for row in previous_board]  # we create a copy of the previous board
             board[y][x] = Queen.value
             banList["row"][y] = True
             banList["slash"][slash_value] = True

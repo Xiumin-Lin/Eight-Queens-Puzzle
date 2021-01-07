@@ -1,39 +1,39 @@
 class Queen:
-    value = 1   # la valeur qui représente la reine dans l'échiquier 
+
+    value = 1   # the value that represents the queen in the chessboard
+
     def __init__(self, y, x, board_size, board):
-        self.y = y  # l'indice ligne de la reine
-        self.x = x  # l'indice colonne de la reine
+        self.y = y  # queen's row index
+        self.x = x  # queen's column index
         self.board_size = board_size
         self.board = board
 
-    # Une fonction qui vérifie si la reine peut attaquer une autre reine
-    # Attention, cette fonction ne vérifie que les cases à droite, en bas, en diagonal bas gauche et droit de la reine
-    # Utilisez cette fonction avec une boucle qui parcourt le board de gauche à droite et puis de haut en bas
+    # A function that checks if the queen can attack another queen
+    # Warning, this function only checks the right, bottom, bottom left and right diagonal boxes of the queen
+    # Use this function with a loop that runs from left to right and then up and down the board.
     def can_attack(self):
-        if (self.can_attack_right() 
-                or self.can_attack_down() 
-                or self.can_attack_diag_down_left() 
+        if (self.can_attack_right()
+                or self.can_attack_down()
+                or self.can_attack_diag_down_left()
                 or self.can_attack_diag_down_right()):
             return True
         return False
 
-
-    # Une fonction qui vérifie si la reine peut attaquer (une autre reine) à sa droite
+    # A function that checks if the queen can attack (another queen) to her right
     def can_attack_right(self):
         for i in range(self.x + 1, self.board_size):
             if (self.board[self.y][i] == Queen.value):
                 return True
         return False
 
-    # Une fonction qui vérifie si la reine peut attaquer en bas
+    # A function that checks if the queen can attack down
     def can_attack_down(self):
         for i in range(self.y + 1, self.board_size):
             if (self.board[i][self.x] == Queen.value):
                 return True
         return False
-         
 
-    # Une fonction qui vérifie si la reine peut attaquer à sa diagonale bas gauche
+    # A function that checks if the queen can attack at her bottom left diagonal
     def can_attack_diag_down_left(self):
         i = 1
         while((self.board_size - (self.y + i)) > 0 and (self.x - i) >= 0):
@@ -44,8 +44,7 @@ class Queen:
             i += 1
         return False
 
-
-    # Une fonction qui vérifie si la reine peut attaquer à sa diagonale bas droite
+    # A function that checks if the queen can attack at her bottom right diagonal
     def can_attack_diag_down_right(self):
         i = 1
         while((self.board_size - (self.y + i)) > 0 and (self.board_size - (self.x + i)) > 0):

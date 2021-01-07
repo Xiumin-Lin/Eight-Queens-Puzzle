@@ -1,9 +1,10 @@
 from queen_functions import *
 
-# Les 3 fonctions utilitaires demandé dans le projet
+# The 3 utility functions requested in the project
 
-# Une fonction d’affichage du plateau
-def print_board(board_size, board): #Steven
+
+# A chessboard display function
+def print_board(board_size, board):
     boardStr = ""
     for row in board:
         for col in row:
@@ -11,10 +12,11 @@ def print_board(board_size, board): #Steven
         boardStr += "\n"
     print(boardStr, end='')
 
-# Une fonction indiquant si aucune reine ne peut se frapper
+
+# A function indicating if no queen can attack each other
 def can_t_attack(board_size, board):
-    for y in range(board_size):     # y = row
-        for x in range(board_size): # x = col
+    for y in range(board_size):  # y = row
+        for x in range(board_size):  # x = col
             if board[y][x] == 1:
                 queen = Queen(y, x, board_size, board)
                 if queen.can_attack():
@@ -22,7 +24,7 @@ def can_t_attack(board_size, board):
     return True
 
 
-# Une fonction indiquant si la solution a été trouvée ainsi que le nombre de reine.
+# A function indicating whether the solution has been found and the number of queen.
 def is_soluce(board_size, board):
     nb_queens = 0
     for row in board:
@@ -30,5 +32,5 @@ def is_soluce(board_size, board):
             if col == 1:
                 nb_queens += 1
 
-    is_a_soluce = True if (can_t_attack(board_size, board) and nb_queens == board_size) else False
+    is_a_soluce = (True if (can_t_attack(board_size, board) and nb_queens == board_size) else False)
     return is_a_soluce, nb_queens
