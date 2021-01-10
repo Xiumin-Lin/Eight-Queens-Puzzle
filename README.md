@@ -5,7 +5,7 @@ For recall, a queen can move in a straight line, vertically or horizontally or d
 
 This project contains two algorithms to solve the N-Queen-Puzzle : 
 - The first one is "solve_n_queen_small" and uses a backtracking algorithm. This algorithm is only optimized for N < 25 queens.
-- The second one is "solve_n_queen_big" and uses a min-conflicts algorithm, much more efficient than the backtracking. It can go up to N > 100 queens and even further
+- The second one is "solve_n_queen_big" and uses a min-conflicts algorithm, much more efficient than the backtracking. It can go up to N > 100 queens and even further. If the algorithm does not find a solution for N > 3, try to increase the max_step.
 
 There is a function named "solve_n_queen_all_soluce" that computes all the solutions for a given N using the backtracking algorithm. It can be used for N <= 14.
 

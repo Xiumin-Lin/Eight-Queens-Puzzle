@@ -17,9 +17,9 @@ def solve_n_queen_small(board_size, empty_board):
 
 
 # Test if it is possible to place a queen on the column number x
-# _ Recursively calls the backtrack() function if a queen can be placed in the array.
-# but not all the queens have been placed
-# The squares of the same diagonal either / or \ have the same value.
+# _ Recursively calls the backtrack () function as long as a queen can be
+#   placed on the board and all queens have not been placed
+# _ The squares of the same diagonal either / or \ have the same value.
 # _ When a queen can be placed, the line (y) and its diagonals (/ and \)
 #   on which it is placed will be banned and will not be processed further
 #   during the "for" until the placed queen is removed.
@@ -59,6 +59,7 @@ def backtrack(x, board_size, previous_board, banList):
 
 ################################################
 # Second algorithm: the best
+# If there is no solution for N > 3, try to increase the max_step
 def solve_n_queen_big(board_size, empty_board):
     for num_config in range(board_size):
         board = [row[:] for row in empty_board]
@@ -72,6 +73,11 @@ def solve_n_queen_big(board_size, empty_board):
     return board, solved
 
 
+# Give a random configuration of N queen on a board of N size
+# There are only 1 queen per column & for most N, 1 queen per row
+# Return in a list the coordinates of all the queens
+# There a only 1 Q per column so the list contains only queen's line value
+# For example, "listQ[i] = j" means there is a queen at column j & row i
 def set_queens_on_board(board_size):
     listQ = [0] * board_size
     y = random.randint(0, board_size - 1)
@@ -82,6 +88,10 @@ def set_queens_on_board(board_size):
     return listQ
 
 
+# A min-conflicts algorithm for the N Queens Puzzle
+# _ Need a list of coordinates of all the queens on the board
+#   and 1 per column (can be obtains with set_queens_on_board())
+# _ max_step designates the max number of attempts for a configuration
 def min_conflicts(listQ, board_size, max_step):
     for step in range(max_step):
         most_nb_c, most_c_listQ = most_conflicts_listQ(listQ, board_size)
@@ -107,6 +117,8 @@ def min_conflicts(listQ, board_size, max_step):
     return False
 
 
+# most_conflicts : return the max number of conflict in a board for a queens
+# most_conflicts_listQ : return the list of queens with the most conflicts
 def most_conflicts_listQ(listQ, board_size):
     most_conflicts = 0
     most_conflicts_listQ = []
@@ -121,6 +133,9 @@ def most_conflicts_listQ(listQ, board_size):
     return most_conflicts, most_conflicts_listQ
 
 
+# Return the number of conflict for a queen (called here the reference queen)
+# listQ : A list of coordinates of all the queens on the board
+# ref_Q designates the idx of the reference queen in the listQ
 def get_nb_conflits(listQ, refQ_x, board_size):
     nb_conflits = 0
     left_conflit = False
@@ -159,6 +174,9 @@ def get_nb_conflits(listQ, refQ_x, board_size):
     return nb_conflits
 
 
+# Test if the reference queen can be attacked on her slash diagonal (/)
+# If there are, return 1 no matter the number of queen
+# Else return 0
 def subBoard_slash(sublistQ_idx, listQ, refQ_x):
     slash_value_ref = listQ[refQ_x] + refQ_x
     for col in sublistQ_idx:
@@ -168,6 +186,9 @@ def subBoard_slash(sublistQ_idx, listQ, refQ_x):
     return 0
 
 
+# Test if the reference queen can be attacked on her backslash diagonal (\)
+# If there are, return 1 no matter the number of queen
+# Else return 0
 def subBoard_backslash(sublistQ_idx, listQ, refQ_x, board_size):
     backslash_value_ref = listQ[refQ_x] - refQ_x + (board_size - 1)
     for col in sublistQ_idx:
@@ -192,7 +213,7 @@ def solve_n_queen_all_soluce(board_size, empty_board):
 
 # Works like the backtrack function, but receives a list (boards) in addition.
 # which stores all possible solutions for a given N of the N Queen Puzzle
-# Return nothing, the list of all solutions corresponds to the list passed in arg
+# Return nothing, list of all solutions corresponds to the list passed in arg
 # If there is no solution, the list will be empty.
 def backtrack_all(x, board_size, previous_board, banList, boards):
     if(x == board_size):

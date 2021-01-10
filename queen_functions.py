@@ -11,7 +11,7 @@ class Queen:
     # Checks if the queen can attack another queen
     # Warning, this only checks the
     # right, bottom, bottom left and right diagonal squares of the queen
-    # Use this with a loop that runs from left to right and then up and down the board.
+    # Use this with a loop that runs from left to right and then up and down
     def can_attack(self):
         if (self.can_attack_right()
                 or self.can_attack_down()
